@@ -79,14 +79,18 @@ def summaries(models, df):
         summary_of_model(m, df)
 
 
-def collect_models(models, df, column, future):
+def collect_models(models, df, column, future, since=None):
     index = get_date_index(df)
     index = pd.period_range(index[0], index[-1]+future, name="date")
     mod_df = pd.DataFrame(df[column].reindex(index=index))
-    ext_x = get_date_range(index)   
+    
+    ext_x = get_date_range(index) 
 
     for m in models:
         mod_df[m.__class__.__name__] = m.compute(ext_x)
+        if since is not None:
+            mod_df[m.__class__.__name__].iloc[:since] = np.nan
+
     
     return mod_df
     
