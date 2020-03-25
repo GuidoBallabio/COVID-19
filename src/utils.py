@@ -12,7 +12,7 @@ provincial_data = data_dir / "dati-province" / "dpc-covid19-ita-province.csv"
 def extract_data(file, reg=False, prov=False):
     df = pd.read_csv(file, index_col=0, parse_dates=[0])
 
-    df = df.drop(columns=["stato"])
+    df = df.drop(columns=["stato", "note_it", "note_en"])
 
     if reg or prov:
         df = df.drop(columns=["codice_regione", "lat", "long"])
